@@ -1,5 +1,5 @@
 {
-  "name": "system",
+  "name": "wavy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -20,7 +20,7 @@
     "browserify": "^17.0.0",
     "eslint": "^7.20.0",
     "terser": "^5.6.0",
-    "watchify": "^3.11.1"
+    "watchify": "^4.0.0"
   },
   "eslintConfig": {
     "env": {

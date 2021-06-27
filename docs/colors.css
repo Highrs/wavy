@@ -1,0 +1,22 @@
+html, body {
+  background: #1a1a1a;
+  height: 100%;
+  margin:0;
+}
+#content {
+  height: 100%;
+  margin: 0;
+}
+.panel {
+  display: block;
+  margin: auto;
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
+  background: #363636;
+}
+.base {
+  stroke-width: 3px;
+  stroke: #00ff66ff;
+  fill: #363636;
+}
