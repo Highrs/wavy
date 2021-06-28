@@ -18,22 +18,28 @@ const complicator = (waveIn) => {
 
   console.log(waveIn.wave);
 
-  for (let i = 0; i < waveIn.wave.length; i++) {
+  for (let i = 0; i <= waveIn.wave.length; i++) {
     let baseWaveElement = waveIn.wave[i];
     if (
-      (i === waveIn.wave.length - 1)
+      (i === waveIn.wave.length)
     ) {
       endElement(complicatedWave[waveElementCoutner], 'end1');
-      complicatedWave[waveElementCoutner].leng++;
       waveElementCoutner++;
     } else
     switch(baseWaveElement) {
       case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
         if (i !== 0) {
           endElement(complicatedWave[waveElementCoutner], 'end1');
           waveElementCoutner++;
         }
-        startNew(complicatedWave, waveElementCoutner, 'start1', '2');
+        startNew(complicatedWave, waveElementCoutner, 'start1', baseWaveElement);
         break;
       case '.': extendLast(complicatedWave[waveElementCoutner]); break;
       default: console.log('ERROR: No such case in complicator()');
@@ -81,19 +87,12 @@ const drawer = (complicatedWave) => {
     );
   });
 
-  // type: 2,
-  // start: 'start1',
-  // fill: 'none',
-  // end: 'end1',
-  // leng: 5,
-  // hshift: 0
-
   return drawnWave;
 };
 
 const main = () => {
   let waveIn = {
-    wave: '2...2.....2.......................2......2........',
+    wave: '2..........2...6....5...2....',
     leng: 200,
     num: 10,
   };
