@@ -32,91 +32,126 @@ const waveMaker = (waveIn) => {
 
 const complicator = (waveIn) => {
   let complicatedWave = [];
-  let waveElementCoutner = 0;
+  let waveElementCoutner = -1;
 
   console.log(waveIn.wave);
 
-  for (let i = 0; i <= waveIn.wave.length; i++) {
+  //initial sequencing
+  for (let i = 0; i < waveIn.wave.length; i++) {
+    // console.log('First loop ' + i + ' ' + waveIn.wave[i] + ' ' + waveElementCoutner);
     let baseWaveElement = waveIn.wave[i];
-    let startType = '';
-    let endType = '';
-    if (
-      (i === waveIn.wave.length)
-    ) {
-      endElement(complicatedWave[waveElementCoutner], 'end2E');
-      waveElementCoutner++;
-    } else {
-      switch(baseWaveElement) {
-        case '0':
-        case '1':
+    switch (baseWaveElement) {
+      case '.':
+        extend(complicatedWave[waveElementCoutner]);
+        break;
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+        // console.log('here');
+        createNew(
+          complicatedWave,
+          complicatedWave[waveElementCoutner] ?
+            complicatedWave[waveElementCoutner].leng +
+              complicatedWave[waveElementCoutner].hshift :
+            0,
+          baseWaveElement
+        );
+        waveElementCoutner++;
+        break;
+      default: console.log('ERROR in first loop of complicator.');
+    }
+    // console.log(complicatedWave[waveElementCoutner]);
+  }
 
-          break;
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-          if (i !== 0) {
-            endElement(complicatedWave[waveElementCoutner], 'end22');
-            waveElementCoutner++;
-          }
-          i === 0 ? startType = 'startS2' : startType = 'start22';
-          startNew(complicatedWave, waveElementCoutner, startType, baseWaveElement);
-          break;
-        case '.': extendLast(complicatedWave[waveElementCoutner]); break;
-        default: console.log('ERROR: No such case in complicator()');
-      }
+  // console.log(complicatedWave);
+  //start/end definer
+  for (let i = 0; i < complicatedWave.length; i++) {
+    // console.log('Second loop ' + i);
+    // console.log(complicatedWave[i]);
+    let waveElement = complicatedWave[i];
+    let waveStart = 'start';
+    let waveEnd = 'end';
+    switch(i) {
+      case 0:
+        switch(waveElement.type) {
+          case '2':
+            waveStart += 'S2';
+            waveEnd += waveElement.type + complicatedWave[i+1].type;
+            break;
+          default:
+            waveStart += waveElement.type + waveElement.type;
+            waveEnd += waveElement.type + waveElement.type;
+        }
+        break;
+      case complicatedWave.length - 1:
+        waveStart += complicatedWave[i-1].type + waveElement.type;
+        switch(waveElement.type) {
+          case '2':
+            waveEnd += '2E';
+            break;
+          default:
+            waveEnd += waveElement.type + waveElement.type;
+        }
+        break;
+      default:
+        waveStart +=
+          complicatedWave[i-1].type === '2' && complicatedWave[i].type !== '2' ?
+          waveElement.type + waveElement.type :
+          complicatedWave[i-1].type + waveElement.type;
+        switch(complicatedWave[i].type){
+          case '2':
+            waveEnd += waveElement.type + complicatedWave[i+1].type;
+            break;
+          default:
+            waveEnd += waveElement.type + waveElement.type;
+        }
+
     }
 
+    complicatedWave[i].start = waveStart;
+    complicatedWave[i].end = waveEnd;
   }
 
   console.log(complicatedWave);
   return complicatedWave;
 };
 
-const startNew = (complicatedWave, waveElementCoutner, startType, waveType) => {
-  let horizontalShift =
-    complicatedWave[waveElementCoutner - 1] ?
-    complicatedWave[waveElementCoutner - 1].hshift + complicatedWave[waveElementCoutner - 1].leng :
-    0;
+const createNew = (complicatedWave, horizontalShift, waveType) => {
 
   complicatedWave.push({
-    type: ((waveType === 1 | waveType === 0) ? 0 : 2),
-    fill: ((waveType === 1 | waveType === 0) ? 'none' : waveType),
-    start: startType,
-    end: 'none',
+    type: ((waveType === '1' | waveType === '0') ? waveType : '2'),
+    start: '',
+    end: '',
     leng: 1,
     hshift: horizontalShift
   });
+
+  // return complicatedWave;
 };
 
-const extendLast = (complicatedWaveElemet) => {
+const extend = (complicatedWaveElemet) => {
   complicatedWaveElemet.leng++;
 };
 
-const endElement = (complicatedWaveElemet, endType) => {
-  // complicatedWaveElemet.leng++;
-  complicatedWaveElemet.end = endType;
-};
-
 const drawer = (complicatedWave) => {
+  let multiplier = 20;
 
   let line = ['g', tt(10, 20)];
 
   let grid = ['g', {}];
-  for (let i = 0; i < displayWidth; i = i + 20 ) {
+  for (let i = 0; i < displayWidth; i = i + multiplier ) {
     grid.push(['path', {d: skin.vertLine(i), class: 'grid'}]);
   }
 
-
-  let multiplier = 20;
   let drawnWave = ['g', {}];
-
   complicatedWave.map(e => {
-    // console.log(skin[e.start]() + skin[e.end]());
     drawnWave.push(
       ['path', {d: ( skin[e.start]((e.hshift) * multiplier) + skin[e.end]((e.hshift + e.leng) * multiplier) ), class: 'base'}]
     );
@@ -129,7 +164,7 @@ const drawer = (complicatedWave) => {
 
 const main = () => {
   let waveIn = {
-    wave: '22...2......6....5...2.......',
+    wave: '0.1.0.2.1.0.1.1.2.2...2.0.0.2.3',
     leng: 200,
     num: 10,
     per: 20
@@ -277,31 +312,60 @@ module.exports = {
     return 'M ' + hShift +', 15 L ' + hShift +', -15';
   },
 
-  start00: (hShift = 0) => {},
-  start01: (hShift = 0) => {},
-  start10: (hShift = 0) => {},
-  start11: (hShift = 0) => {},
-  start02: (hShift = 0) => {
-    return 'M 0, -10 L 5, 10';
+  start00: (hShift = 0) => {
+    return 'M '+(hShift)+', 10 L ';
   },
-  start12: (hShift = 0) => {
 
+  start11: (hShift = 0) => {
+    return 'M '+(hShift)+', -10 L ';
+  },
+
+  start01: (hShift = 0) => {
+    return 'M '+(hShift)+', 10 L '+(hShift+10)+', -10 L';
+  },
+
+  start10: (hShift = 0) => {
+    return 'M '+(hShift)+', -10 L '+(hShift+10)+', 10 L';
+  },
+
+  end00: (hShift = 0) => {
+    return (hShift)+', 10';
+  },
+
+  end11: (hShift = 0) => {
+    return (hShift)+', -10';
+  },
+
+  start02: (hShift = 0) => {
+    return 'M '+(hShift)+', 10 L '+(hShift+10)+', -10 L';
+  },
+
+  start12: (hShift = 0) => {
+    return 'M '+(hShift+10)+', 10 L '+(hShift)+', -10 L';
   },
 
   startS2: (hShift = 0) => {
-    return 'M '+(hShift)+', -10 L '+(hShift)+', 10';
+    return 'M '+(hShift)+', 10 L '+(hShift)+', -10 L';
   },
 
   start22: (hShift = 0) => {
-    return 'M '+(10+hShift)+', -10 L '+(5+hShift)+', 0 L '+(10+hShift)+', 10 L';
+    return 'M '+(10+hShift)+', 10 L '+(5+hShift)+', 0 L '+(10+hShift)+', -10 L';
+  },
+
+  end20: (hShift = 0) => {
+    return ' '+(hShift)+', -10 L '+(hShift+10)+', 10 Z';
+  },
+
+  end21: (hShift = 0) => {
+    return ' '+(hShift+10)+', -10 L '+(hShift)+', 10 Z';
   },
 
   end22: (hShift = 0) => {
-    return ' '+(hShift)+', 10 L '+(5+hShift)+', 0 L '+(hShift)+', -10 Z';
+    return ' '+(hShift)+', -10 L '+(5+hShift)+', 0 L '+(hShift)+', 10 Z';
   },
 
   end2E: (hShift = 0) => {
-    return ' '+(hShift)+', 10 L '+(hShift)+', -10 Z';
+    return ' '+(hShift)+', -10 L '+(hShift)+', 10 Z';
   }
 
 };

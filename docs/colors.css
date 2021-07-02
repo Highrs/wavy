@@ -23,5 +23,5 @@ html, body {
 .base {
   stroke-width: 1px;
   stroke: #000000;
-  fill: #e2e2e2;
+  fill: none;
 }
