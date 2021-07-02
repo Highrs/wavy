@@ -67,14 +67,10 @@ const complicator = (waveIn) => {
         break;
       default: console.log('ERROR in first loop of complicator.');
     }
-    // console.log(complicatedWave[waveElementCoutner]);
   }
 
-  // console.log(complicatedWave);
   //start/end definer
   for (let i = 0; i < complicatedWave.length; i++) {
-    // console.log('Second loop ' + i);
-    // console.log(complicatedWave[i]);
     let waveElement = complicatedWave[i];
     let waveStart = 'start';
     let waveEnd = 'end';
@@ -127,13 +123,12 @@ const createNew = (complicatedWave, horizontalShift, waveType) => {
 
   complicatedWave.push({
     type: ((waveType === '1' | waveType === '0') ? waveType : '2'),
+    fill: waveType,
     start: '',
     end: '',
     leng: 1,
     hshift: horizontalShift
   });
-
-  // return complicatedWave;
 };
 
 const extend = (complicatedWaveElemet) => {
@@ -151,9 +146,23 @@ const drawer = (complicatedWave) => {
   }
 
   let drawnWave = ['g', {}];
+
+
   complicatedWave.map(e => {
+    let baseClass = 'base';
+    let fillClass = '';
+    switch(e.fill){
+      case '3': fillClass = 'Yellow'; break;
+      case '4': fillClass = 'Orange'; break;
+      case '5': fillClass = 'Blue';   break;
+      case '6': fillClass = 'Cyan';   break;
+      case '7': fillClass = 'Green';  break;
+      case '8': fillClass = 'Purple'; break;
+      case '9': fillClass = 'Pink';   break;
+    }
+
     drawnWave.push(
-      ['path', {d: ( skin[e.start]((e.hshift) * multiplier) + skin[e.end]((e.hshift + e.leng) * multiplier) ), class: 'base'}]
+      ['path', {d: ( skin[e.start]((e.hshift) * multiplier) + skin[e.end]((e.hshift + e.leng) * multiplier) ), class: baseClass + fillClass}]
     );
   });
 
@@ -164,7 +173,7 @@ const drawer = (complicatedWave) => {
 
 const main = () => {
   let waveIn = {
-    wave: '0.1.0.2.1.0.1.1.2.2...2.0.0.2.3',
+    wave: '22.0..1.0.3.1.0.1.1.4.5...6.0.0.7.8..9.',
     leng: 200,
     num: 10,
     per: 20
@@ -368,6 +377,7 @@ module.exports = {
     return ' '+(hShift)+', -10 L '+(hShift)+', 10 Z';
   }
 
+  // m -66,276 -40,8 m -23,-9 -25,-0 -11,-21 12,-22 81,-2
 };
 
 },{}]},{},[2]);
