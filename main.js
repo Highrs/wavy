@@ -135,19 +135,21 @@ const drawer = (complicatedWave) => {
 
   complicatedWave.map(e => {
     let baseClass = 'base';
-    let fillClass = '';
+    let fillClass = 'base';
     switch(e.fill){
-      case '3': fillClass = 'Yellow'; break;
-      case '4': fillClass = 'Orange'; break;
-      case '5': fillClass = 'Blue';   break;
-      case '6': fillClass = 'Cyan';   break;
-      case '7': fillClass = 'Green';  break;
-      case '8': fillClass = 'Purple'; break;
-      case '9': fillClass = 'Pink';   break;
+      case '3': fillClass += 'Yellow'; break;
+      case '4': fillClass += 'Orange'; break;
+      case '5': fillClass += 'Blue';   break;
+      case '6': fillClass += 'Cyan';   break;
+      case '7': fillClass += 'Green';  break;
+      case '8': fillClass += 'Purple'; break;
+      case '9': fillClass += 'Pink';   break;
     }
 
     drawnWave.push(
-      ['path', {d: ( skin[e.start]((e.hshift) * multiplier) + skin[e.end]((e.hshift + e.leng) * multiplier) ), class: baseClass + fillClass}]
+      ['path', {
+        d: ( skin[e.start]((e.hshift) * multiplier) + skin[e.end]((e.hshift + e.leng) * multiplier) ),
+        class: baseClass + ' ' + fillClass}]
     );
   });
 

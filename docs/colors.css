@@ -24,46 +24,26 @@ html, body {
   stroke-width: 1px;
   stroke: #000000;
   fill: none;
+  fill-opacity: 0.25;
 }
 .baseYellow {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #fff500;
-  fill-opacity: 0.25;
 }
 .baseOrange {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #ff9100;
-  fill-opacity: 0.25;
 }
 .baseBlue {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #1c00ff;
-  fill-opacity: 0.25;
 }
 .baseCyan {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #00fff7;
-  fill-opacity: 0.25;
 }
 .baseGreen {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #1cff00;
-  fill-opacity: 0.25;
 }
 .basePurple {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #c400ff;
-  fill-opacity: 0.25;
 }
 .basePink {
-  stroke-width: 1px;
-  stroke: #000000;
   fill: #ff006e;
-  fill-opacity: 0.25;
 }
